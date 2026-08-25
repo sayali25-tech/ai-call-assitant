@@ -12,7 +12,8 @@ import pygame  # This now works with pygame-ce
 # ============================================================
 # 1. PUT YOUR API KEY HERE
 # ============================================================
-GROQ_API_KEY = "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"  # <-- REPLACE with your actual key
+#GROQ_API_KEY = "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"  
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # ============================================================
 # 2. SET UP THE AI'S PERSONALITY
@@ -70,22 +71,23 @@ async def speak_text(text):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
     temp_file.close()
     
-    # Generate speech
+    # Generate speech using Indian English voice
     communicate = edge_tts.Communicate(text, voice="en-IN-NeerjaNeural")
     await communicate.save(temp_file.name)
     
     # Play the audio using pygame
     pygame.mixer.init()
-    pygame.mixer.music.stop()          # <-- Stops any previous audio
     pygame.mixer.music.load(temp_file.name)
+    pygame.mixer.music.stop()  # Stops any currently playing audio
     pygame.mixer.music.play()
     
     # Wait for playback to finish
     while pygame.mixer.music.get_busy():
-        await asyncio.sleep(0.1)       # <-- Use asyncio.sleep, not time.sleep
+        time.sleep(0.1)
     
     pygame.mixer.quit()
     os.unlink(temp_file.name)
+
 # ============================================================
 # 6. MAIN FUNCTION: RUN THE LOOP
 # ============================================================
