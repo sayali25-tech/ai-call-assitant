@@ -1,6 +1,3 @@
 fastapi
 uvicorn
 groq
-twilio
-edge-tts
-python-dotenv
