@@ -1,5 +1,3 @@
 fastapi
 uvicorn
 groq
-twilio
-python-multipart
